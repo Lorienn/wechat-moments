@@ -1,0 +1,56 @@
+.index {
+  &_bg {
+    width: 750px;
+    height: 400px;
+    background: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbbra.cn%2FUploadfiles%2Fimgs%2F20110922%2Ffengj%2FXbzs_002.jpg&refer=http%3A%2F%2Fbbra.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619234217&t=7376eb91e43e222e47413498d9358c1f) no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    color: #fff;
+    margin-bottom: 80px;
+
+    .at-avatar {
+      position: absolute;
+      right: 30px;
+      bottom: -40px;
+    }
+
+    &_name {
+      position: absolute;
+      right: 180px;
+      bottom: 10px;
+    }
+  }
+  &_content {
+    &_piece {
+      display: flex;
+      padding: 0 30px;
+      font-size: 30px;
+
+      &_l {
+        margin-right: 20px;
+      }
+
+      &_name {
+        font-weight: 700;
+        color: #565e7d;
+        margin-bottom: 10px;
+      }
+
+      &_detail {
+        margin-bottom: 10px;
+        text-align: justify;
+      }
+
+      &_time {
+        margin-right: 10px;
+        font-size: 22px;
+        color: #b4b4b4;
+      }
+
+      &_del {
+        font-size: 22px;
+        color: #565e7d;
+      }
+    }
+  }
+}
