@@ -1,6 +1,6 @@
 {
 	"miniprogramRoot": "dist/",
-	"projectname": "react",
+	"projectname": "wechat-moments",
 	"description": "new",
 	"appid": "touristappid",
 	"setting": {

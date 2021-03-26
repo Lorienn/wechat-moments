@@ -32,6 +32,7 @@ export default class Add extends Component {
   }
   addMoment () {
     const { content, selectorChecked } = this.state
+    // todo: 使用redux管理组件间共享state
     console.log(content, selectorChecked)
     this.goIndexPage()
   }

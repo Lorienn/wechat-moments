@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { AtNavBar, AtAvatar, AtDivider } from 'taro-ui'
 
 import './index.scss'
@@ -9,6 +9,7 @@ export default class Index extends Component {
   static defaultProps = {
   }
   state = {
+    userInfo: null,
     moments: [
       {
         id: 0,
@@ -18,7 +19,7 @@ export default class Index extends Component {
         pushTime: new Date(1616636529786)
       }, {
         id: 1,
-        nickName: '张小龙',
+        nickName: '马化腾',
         avatarUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.17qq.com%2Fimg_qqtouxiang%2F76257253.jpeg&refer=http%3A%2F%2Fwww.17qq.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619228946&t=b0c3e74fa33aadf43f2b83b1e569b5e9',
         content: '对未来的真正慷慨，是把一切都献给现在。',
         pushTime: new Date(1616630000000)
@@ -52,41 +53,26 @@ export default class Index extends Component {
     }
   }
   removeMoment (i) {
-    this.setState(prevState => {
+    this.setState(() => {
       return {
-        moments: prevState.moments.filter((item, index) => index !== i)
+        moments: this.state.moments.filter((item, index) => index !== i)
       }
     })
   }
-  // componentWillMount () { }
-  componentDidMount () {
-    // wx.getSetting({
-    //   success (res) {
-    //     if (!res.authSetting['scope.userInfo']) {
-    //       wx.authorize({
-    //         scope: 'scope.userInfo',
-    //         success () {
-    //           wx.getUserInfo({
-    //             success: res => {
-    //               var userInfo = res.userInfo
-    //               var nickName = userInfo.nickName
-    //               var avatarUrl = userInfo.avatarUrl
-    //               console.log(nickName, avatarUrl)
-    //             }
-    //           })
-    //         }
-    //       })
-    //     }
-    //   }
-    // })
+  bindGetUserInfo (e) {
+    console.log(e.detail.userInfo)
   }
+  // componentWillMount () { }
+  // componentDidMount () { }
   // componentWillUnmount () { }
   // componentDidShow () { }
   // componentDidHide () { }
   render () {
-    const { moments } = this.state
+    const { userInfo, moments } = this.state
     return (
       <View className='index'>
+        {/* todo: 考虑逻辑改为点击头像登陆 */}
+        <Button className='index_get' open-type="getUserInfo" onGetUserInfo={this.bindGetUserInfo}></Button>
         {/* 顶部导航栏 */}
         <AtNavBar
           color='#000'
@@ -96,11 +82,14 @@ export default class Index extends Component {
           onClickRgIconSt={this.goAddPage}
         />
         {/* 朋友圈背景+用户信息 */}
+        {/* todo: 点击更换朋友圈背景 */}
         <view className='index_bg'>
-          <Text className='index_bg_name'>张小龙</Text>
-          <AtAvatar size='large' image='https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.17qq.com%2Fimg_qqtouxiang%2F76257253.jpeg&refer=http%3A%2F%2Fwww.17qq.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619228946&t=b0c3e74fa33aadf43f2b83b1e569b5e9'></AtAvatar>
+          {/* todo: 获取用户授权，得到用户信息 */}
+          <Text className='index_bg_name'>{(userInfo && userInfo.nickName) || '游客'}</Text>
+          <AtAvatar size='large' image={(userInfo && userInfo.avatarUrl) || 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201704%2F27%2F20170427155254_Kctx8.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619363254&t=e64aa02279ef0fb9683bc0d2b27c04a8'}></AtAvatar>
         </view>
         {/* 朋友圈区域 */}
+        {/* todo: 通过Taro.request请求data.json来获取朋友圈数据 */}
         <view className='index_content'>
           {
             moments.map((item, i) => {

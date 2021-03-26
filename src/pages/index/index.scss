@@ -1,4 +1,13 @@
 .index {
+  &_get {
+    width: 750px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+  }
+
   &_bg {
     width: 750px;
     height: 400px;
