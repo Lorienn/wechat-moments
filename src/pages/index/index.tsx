@@ -1,11 +1,13 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { connect } from 'react-redux'
 import { View, Text } from '@tarojs/components'
 import { AtNavBar, AtAvatar, AtDivider } from 'taro-ui'
 import './index.scss'
 
 import { getTimeGap } from '../../utils'
+import { connect } from 'react-redux'
+import { updateMoments } from '../../actions/user'
+
 
  class Index extends Component {
   goAddPage () {
@@ -14,11 +16,8 @@ import { getTimeGap } from '../../utils'
     })
   }
   removeMoment (i) {
-    // this.setState(() => {
-    //   return {
-    //     moments: this.state.moments.filter((item, index) => index !== i)
-    //   }
-    // })
+    const { moments, updateMoments } = this.props
+    updateMoments(moments.filter((item, index) => index !== i))
   }
   // componentWillMount () { }
   // componentDidMount () { }
@@ -29,7 +28,6 @@ import { getTimeGap } from '../../utils'
     const { userInfo, moments } = this.props
     return (
       <View className='index'>
-        {/* todo: 顶部显示今日天气 */}
         {/* 顶部导航栏 */}
         <AtNavBar
           color='#000'
@@ -40,7 +38,6 @@ import { getTimeGap } from '../../utils'
           onClickRgIconSt={this.goAddPage}
         />
         {/* 朋友圈背景+用户信息 */}
-        {/* todo: 点击更换朋友圈背景 */}
         <View className='index_bg'>
           <Text className='index_bg_name'>{userInfo.nickName}</Text>
           <AtAvatar size='large' image={userInfo.avatarUrl}></AtAvatar>
@@ -59,7 +56,6 @@ import { getTimeGap } from '../../utils'
                       <View className='index_content_piece_name'>{item.nickName}</View>
                       <View className='index_content_piece_detail'>{item.content}</View>
                       <Text className='index_content_piece_time'>{getTimeGap(item.pushTime)}</Text>
-                      {/* todo: 点击删除之后 */}
                       <Text className='index_content_piece_del' onClick={this.removeMoment.bind(this, i)}>删除</Text>
                     </View>
                   </View>
@@ -79,5 +75,9 @@ export default connect(
     moments: user.moments,
     userInfo: user.userInfo
   }),
-  null
+  (dispatch) => ({
+    updateMoments (data) {
+      dispatch(updateMoments(data))
+    }
+  })
 )(Index)
