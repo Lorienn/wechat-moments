@@ -1,5 +1,6 @@
 export default {
   pages: [
+    'pages/authorize/index',
     'pages/index/index',
     'pages/add/index'
   ],
