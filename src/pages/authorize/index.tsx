@@ -5,6 +5,7 @@ import './index.scss'
 
 import { connect } from 'react-redux'
 import { setUserInfo } from '../../actions/user'
+import { getURLParams } from '../../utils'
 
 class Index extends Component {
   goIndexPage () {
@@ -13,8 +14,15 @@ class Index extends Component {
     })
   }
   handleClick (e) {
-    const { setUserInfo } = this.props
-    setUserInfo(e.detail.userInfo)
+    // 将userinfo保存到storage和redux中
+    const { setUserInfo, tid } = this.props
+    const { userInfo } = e.detail
+    setUserInfo(userInfo)
+    const openid = getURLParams(tid, 'openid')
+    Taro.setStorage({
+      key: openid,
+      data: userInfo
+    })
     this.goIndexPage()
   }
   // componentWillMount () { }

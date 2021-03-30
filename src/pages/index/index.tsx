@@ -39,8 +39,8 @@ import { updateMoments } from '../../actions/user'
         />
         {/* 朋友圈背景+用户信息 */}
         <View className='index_bg'>
-          <Text className='index_bg_name'>{userInfo.nickName}</Text>
-          <AtAvatar size='large' image={userInfo.avatarUrl}></AtAvatar>
+          <Text className='index_bg_name'>{(userInfo && userInfo.nickName) || '游客'}</Text>
+          <AtAvatar size='large' image={(userInfo && userInfo.avatarUrl) || 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201704%2F27%2F20170427155254_Kctx8.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619679568&t=9ff3b78f84f2171e2dd56d7f1d11dd10'}></AtAvatar>
         </View>
         {/* 朋友圈区域 */}
         <View className='index_content'>

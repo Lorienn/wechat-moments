@@ -1,7 +1,7 @@
 export default {
   pages: [
-    'pages/authorize/index',
     'pages/index/index',
+    'pages/authorize/index',
     'pages/add/index'
   ],
   window: {

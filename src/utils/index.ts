@@ -1,5 +1,7 @@
 import Taro from '@tarojs/taro'
+import { setUserInfo } from '../actions/user'
 
+// 时间差格式化
 export const getTimeGap = (prevTime) => {
   const ms = new Date().getTime() - prevTime.getTime()
   const ss = 1000
@@ -21,32 +23,53 @@ export const getTimeGap = (prevTime) => {
     return '刚刚'
   }
 }
-
-export const userLogin = () => {
-  Taro.checkSession({
-    success () {
-      //session_key 未过期，并且在本生命周期一直有效，进入index页面
-    },
-    fail () {
-      // session_key 已经失效，需要重新执行登录流程，进入授权页面？
-      Taro.login({
-        async success (res) {
-          if (res.code) {
-            //发起网络请求
-            const { code } = res
-            // ！！！app_secret很重要，commit前务必删除
-            // todo: 搭建express服务器，以调用code2Session的API，能保存moments和userinfo更好
-            // 为了 access_token 的安全性，后端 API 不能直接在小程序内通过 wx.request 调用
-            // 通过 wx.login 接口获得临时登录凭证 code 后传到开发者服务器调用此接口获取用户openid和session_key
-            const res2 = await Taro.request({
-              url: `/getInfo`
+// 检验用户是否初次登录
+export const checkUserLogin = (dispatch) => {
+  Taro.login({
+    async success (res) {
+      if (res.code) {
+        const { code } = res
+        const res2 = await Taro.request({
+          url: `https://lorien.cn.utools.club/login?code=${code}`
+        })
+        const { openid } = res2.data
+        Taro.getStorage({
+          key: openid,
+          success (res) {
+            dispatch(setUserInfo(res.data))
+          },
+          fail (err) {
+            Taro.redirectTo({
+              url: `/pages/authorize/index?openid=${openid}`
             })
-            console.log(res2)
-          } else {
-            console.log('登录失败！' + res.errMsg)
           }
-        }
-      })
+        })
+      } else {
+        console.log('登录失败！' + res.errMsg)
+      }
     }
   })
+}
+// 检查session会话是否过期
+export const checkSessionStatus = () => {
+  Taro.checkSession({
+    fail () {
+      // session_key 已经失效，需要重新执行登录流程
+      Taro.login()
+    }
+  })
+}
+// 获取URL参数
+export const getURLParams = (url, key) => {
+  const temp1 = url.split('?')
+  const pram = temp1[1]
+  const keyValue = pram.split('&')
+  const obj = {}
+  for (let i = 0; i < keyValue.length; i++){
+      const item = keyValue[i].split('=')
+      const key = item[0]
+      const value = item[1]
+      obj[key] = value
+  }
+  return obj[key]
 }
